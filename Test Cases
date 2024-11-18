@@ -1,0 +1,36 @@
+Test Cases:
+
+1.)
+Rule 3- p,q => (p -> q)
+Expected: p,p,q => q 
+"We can derive the conclusion from the premises."
+Command: 'run([p,q], [p -> q]).'
+
+2.)
+Rule 5- r,(p -> q) => p,q
+Expected: (q,r => p,q) and (r=> p,p,q)
+"We cannot derive the conclusion from the premises."
+Command: 'run([r, (p -> q)], [p, q]).'
+
+3.)
+Rule 2 and 3- r,s => (p -> q) v r
+Expected: r,s => (p -> q), r (rule 2)
+p,r,s => q,r (rule 3)
+"We can derive the conclusion from the premises."
+Command: 'run([r, s], [(p -> q) v r]).'
+
+4.)
+Rule 1 and 3- ~s => (p -> q)
+Expected: p, ~s => q (rule 3)
+p => s, q
+"We cannot derive the conclusion from the premises."
+Command: 'run([~s], [p -> q]).'
+
+5.)
+Rule 1 and 4- p => ~(r), (p ^ q)
+Expected: r, p => (p ^ q) (rule 1)
+r, p => p (Rule 4)
+r, p => q (Rule 4)
+(gets to the the two conclusions in two ways: rule 1 done first and rule 4 done first)
+"We cannot derive the conclusion from the premises."
+Command: 'run([p], [~(r), (p ^ q)]).'
