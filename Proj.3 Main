@@ -101,7 +101,18 @@ prove(L => R) :-
  * and then add A to the left and B to the right.
  */
 % Write your code here
-
+% right implication
+prove(L => R) :-
+    /*member checks if the statement has "A -> B" on the Right list*/
+    member(A -> B, R),
+    /*del deletes "A -> B" from the Right list in order to make the necessary changes to prove using the theorem*/
+    del(A -> B, R, NewR),
+    /*the line below prints out the statement after it has been changed using the theorem*/
+    nl, write('=\t'), write([A | L] => [B | NewR]),
+    /*this is the rule that was used and on what side of the statement it used it on*/
+    write('=\t (by implication/right)'),
+    /*the line below further proves the new statement*/
+    prove([A | L] => [B | NewR]).
 
 % Implement all branching rules below by following Wangs algorithm
 /*
@@ -112,7 +123,63 @@ prove(L => R) :-
  * Both of these must be proved in order to prove the original theorem.
  */
 % Write your code here
+% left disjunction
+prove(L => R) :-
+/*member checks if the statement has "A v B" on the Left list*/
+  member(A v B, L),
+  /*del deletes "A v B" from the Left list in order to make the necessary changes to prove using the theorem*/
+  del(A v B, L, NewL),
+  nl,
+  /*This tells the user that this is the first branch of two that were derived from the statement using the theorem*/
+  write('\tFirst branch: '),
+  nl,
+  write('=\t'),
+  /*the line below prints out the statement after it has been changed using the theorem*/
+  write([A | NewL] => R),
+  /*this is the rule that was used and on what side of the statement it used it on*/
+  write('\t (by or/left)'),
+  /*the line below further proves the new statement*/
+  prove([A | NewL] => R),
+  nl,
+  /*This tells the user that this is the second branch of two that were derived from the statement using the theorem*/
+  write('\tSecond branch: '),
+  nl,
+  write('=\t'),
+  /*the line below prints out the statement after it has been changed using the theorem*/
+  write([B | NewL] => R),
+  /*this is the rule that was used and on what side of the statement it used it on*/
+  write('\t (by or/left)'),
+  /*the line below further proves the new statement*/
+  prove([B | NewL] => R).
 
+% right conjunction
+prove(L => R) :-
+/*member checks if the statement has "A ^ B" on the Left list*/
+  member(A ^ B, R),
+  /*del deletes "A ^ B" from the Left list in order to make the necessary changes to prove using the theorem*/
+  del(A ^ B, R, NewR),
+  nl,
+  /*This tells the user that this is the first branch of two that were derived from the statement using the theorem*/
+  write('\tFirst branch: '),
+  nl,
+  write('=\t'),
+  /*the line below prints out the statement after it has been changed using the theorem*/
+  write(L => [A | NewR]),
+  /*this is the rule that was used and on what side of the statement it used it on*/
+  write('\t (by and/right)'),
+  /*the line below further proves the new statement*/
+  prove(L => [A | NewR]),
+  nl,
+  /*This tells the user that this is the second branch of two that were derived from the statement using the theorem*/
+  write('\tSecond branch: '),
+  nl,
+  write('=\t'),
+  /*the line below prints out the statement after it has been changed using the theorem*/
+  write(L => [B | NewR]),
+  /*this is the rule that was used and on what side of the statement it used it on*/
+  write('\t (by by/right)'),
+  /*the line below further proves the new statement*/
+  prove(L => [B | NewR]).
 
 
 /*
